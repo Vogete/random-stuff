@@ -17,6 +17,11 @@ namespace Playfair_Cipher
                 Console.Write("Write a key: ");
                 string key = Console.ReadLine();
 
+                // Original Playfair cipher with 5×5 table
+                //string encText = Original.Encipher(text, key);
+                //string decText = Original.Decipher(encText, key);
+
+                // Extended Playfair cipher with 6×6 table
                 string encText = Encipher(text, key);
                 string decText = Decipher(encText, key);
 
@@ -26,120 +31,13 @@ namespace Playfair_Cipher
                 Console.WriteLine("Press enter key to continue, or type 'exit' to exit!");
 
             } while (Console.ReadLine().ToLower() != "exit");
-            
+
         }
 
 
 
-        private static int Mod(int a, int b)
-        {
-            return (a % b + b) % b;
-        }
-
-        private static List<int> FindAllOccurrences(string str, char value)
-        {
-            List<int> indexes = new List<int>();
-
-            int index = 0;
-            while ((index = str.IndexOf(value, index)) != -1)
-                indexes.Add(index++);
-
-            return indexes;
-        }
-
-        private static string RemoveAllDuplicates(string str, List<int> indexes)
-        {
-            string retVal = str;
-
-            for (int i = indexes.Count - 1; i >= 1; i--)
-                retVal = retVal.Remove(indexes[i], 1);
-
-            return retVal;
-        }
-
-        private static char[,] GenerateKeySquare(string key)
-        {
-            char[,] keySquare = new char[5, 5];
-            string defaultKeySquare = "ABCDEFGHIKLMNOPQRSTUVWXYZ";
-            string tempKey = string.IsNullOrEmpty(key) ? "CIPHER" : key.ToUpper();
-
-            tempKey = tempKey.Replace("J", "");
-            tempKey += defaultKeySquare;
-
-            for (int i = 0; i < 25; ++i)
-            {
-                List<int> indexes = FindAllOccurrences(tempKey, defaultKeySquare[i]);
-                tempKey = RemoveAllDuplicates(tempKey, indexes);
-            }
-
-            tempKey = tempKey.Substring(0, 25);
-
-            for (int i = 0; i < 25; ++i)
-                keySquare[(i / 5), (i % 5)] = tempKey[i];
-
-            return keySquare;
-        }
-
-        private static void GetPosition(ref char[,] keySquare, char ch, ref int row, ref int col)
-        {
-            if (ch == 'J')
-                GetPosition(ref keySquare, 'I', ref row, ref col);
-
-            for (int i = 0; i < 5; ++i)
-                for (int j = 0; j < 5; ++j)
-                    if (keySquare[i, j] == ch)
-                    {
-                        row = i;
-                        col = j;
-                    }
-        }
-
-        private static char[] SameRow(ref char[,] keySquare, int row, int col1, int col2, int encipher)
-        {
-            return new char[] { keySquare[row, Mod((col1 + encipher), 5)], keySquare[row, Mod((col2 + encipher), 5)] };
-        }
-
-        private static char[] SameColumn(ref char[,] keySquare, int col, int row1, int row2, int encipher)
-        {
-            return new char[] { keySquare[Mod((row1 + encipher), 5), col], keySquare[Mod((row2 + encipher), 5), col] };
-        }
-
-        private static char[] SameRowColumn(ref char[,] keySquare, int row, int col, int encipher)
-        {
-            return new char[] { keySquare[Mod((row + encipher), 5), Mod((col + encipher), 5)], keySquare[Mod((row + encipher), 5), Mod((col + encipher), 5)] };
-        }
-
-        private static char[] DifferentRowColumn(ref char[,] keySquare, int row1, int col1, int row2, int col2)
-        {
-            return new char[] { keySquare[row1, col2], keySquare[row2, col1] };
-        }
-
-        private static string RemoveOtherChars(string input)
-        {
-            string output = input;
-
-            for (int i = 0; i < output.Length; ++i)
-                if (!char.IsLetter(output[i]))
-                    output = output.Remove(i, 1);
-
-            return output;
-        }
-
-        private static string AdjustOutput(string input, string output)
-        {
-            StringBuilder retVal = new StringBuilder(output);
-
-            for (int i = 0; i < input.Length; ++i)
-            {
-                if (!char.IsLetter(input[i]))
-                    retVal = retVal.Insert(i, input[i].ToString());
-
-                if (char.IsLower(input[i]))
-                    retVal[i] = char.ToLower(retVal[i]);
-            }
-
-            return retVal.ToString();
-        }
+        private static string defaultKeySquare = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private static int tableSize = 6;
 
         private static string Cipher(string input, string key, bool encipher)
         {
@@ -178,25 +76,153 @@ namespace Playfair_Cipher
                     retVal += new string(DifferentRowColumn(ref keySquare, row1, col1, row2, col2));
                 }
             }
-
             retVal = AdjustOutput(input, retVal);
+
+            return retVal;
+
+        }
+
+        private static void CalculateTableSize(string keyset)
+        {
+            int i = keyset.Length;
+            tableSize = Convert.ToInt32(Math.Floor(Math.Sqrt(i)));
+        }
+
+        private static char[,] GenerateKeySquare(string key)
+        {
+            char[,] keySquare = new char[tableSize, tableSize];
+
+            string tempKey = string.IsNullOrEmpty(key) ? "CIPHER" : key.ToUpper();
+
+            tempKey += defaultKeySquare;
+
+            for (int i = 0; i < tableSize*tableSize; ++i)
+            {
+                List<int> indexes = FindAllOccurrences(tempKey, defaultKeySquare[i]);
+                tempKey = RemoveAllDuplicates(tempKey, indexes);
+            }
+
+            tempKey = tempKey.Substring(0, tableSize* tableSize);
+
+            for (int i = 0; i < tableSize* tableSize; ++i)
+                keySquare[(i / tableSize), (i % tableSize)] = tempKey[i];
+
+            DrawTable(keySquare);            
+
+            return keySquare;
+        }
+
+        private static List<int> FindAllOccurrences(string str, char value)
+        {
+            List<int> indexes = new List<int>();
+
+            int index = 0;
+            while ((index = str.IndexOf(value, index)) != -1)
+                indexes.Add(index++);
+
+            return indexes;
+        }
+
+        private static string RemoveAllDuplicates(string str, List<int> indexes)
+        {
+            string retVal = str;
+
+            for (int i = indexes.Count - 1; i >= 1; i--)
+                retVal = retVal.Remove(indexes[i], 1);
 
             return retVal;
         }
 
+        private static string RemoveOtherChars(string input)
+        {
+            string output = input;
+            int n;
+            for (int i = 0; i < output.Length; ++i)
+                if (!char.IsLetter(output[i]) && !int.TryParse(output[i].ToString(), out n) )
+                    output = output.Remove(i, 1);
+
+            return output;
+        }
+
+        private static void GetPosition(ref char[,] keySquare, char ch, ref int row, ref int col)
+        {
+
+            for (int i = 0; i < tableSize; ++i)
+                for (int j = 0; j < tableSize; ++j)
+                    if (keySquare[i, j] == ch)
+                    {
+                        row = i;
+                        col = j;
+                    }
+        }
+
+
+        private static char[] SameRow(ref char[,] keySquare, int row, int col1, int col2, int encipher)
+        {
+            return new char[] { keySquare[row, Mod((col1 + encipher), tableSize)], keySquare[row, Mod((col2 + encipher), tableSize)] };
+        }
+
+        private static char[] SameColumn(ref char[,] keySquare, int col, int row1, int row2, int encipher)
+        {
+            return new char[] { keySquare[Mod((row1 + encipher), tableSize), col], keySquare[Mod((row2 + encipher), tableSize), col] };
+        }
+
+        private static char[] SameRowColumn(ref char[,] keySquare, int row, int col, int encipher)
+        {
+            return new char[] { keySquare[Mod((row + encipher), tableSize), Mod((col + encipher), tableSize)], keySquare[Mod((row + encipher), tableSize), Mod((col + encipher), tableSize)] };
+        }
+
+        private static char[] DifferentRowColumn(ref char[,] keySquare, int row1, int col1, int row2, int col2)
+        {
+            return new char[] { keySquare[row1, col2], keySquare[row2, col1] };
+        }
+
+        private static int Mod(int a, int b)
+        {
+            return (a % b + b) % b;
+        }
+
+        private static string AdjustOutput(string input, string output)
+        {
+            StringBuilder retVal = new StringBuilder(output);
+
+            for (int i = 0; i < input.Length; ++i)
+            {
+                int n;
+                if (!char.IsLetter(input[i]) && !int.TryParse(input[i].ToString(), out n))
+                    retVal = retVal.Insert(i, input[i].ToString());
+
+                if (char.IsLower(input[i]))
+                    retVal[i] = char.ToLower(retVal[i]);
+            }
+
+            return retVal.ToString();
+        }
+
+
         public static string Encipher(string input, string key)
         {
+            CalculateTableSize(defaultKeySquare);
             return Cipher(input, key, true);
         }
 
         public static string Decipher(string input, string key)
         {
+            CalculateTableSize(defaultKeySquare);
             return Cipher(input, key, false);
         }
 
-
-
-
-
+        private static void DrawTable(char[,] keySquare)
+        {
+            Console.WriteLine("----------");
+            for (int i = 0; i < tableSize; i++)
+            {
+                for (int j = 0; j < tableSize; j++)
+                {
+                    Console.Write($"{keySquare[i,j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
