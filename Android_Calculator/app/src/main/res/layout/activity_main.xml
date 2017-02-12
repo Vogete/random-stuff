@@ -11,7 +11,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guidelineH4"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.825"
+        app:layout_constraintGuide_percent="0.85"
         tools:layout_editor_absoluteY="544dp"
         tools:layout_editor_absoluteX="0dp"/>
 
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guidelineH3"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65"
+        app:layout_constraintGuide_percent="0.70"
         tools:layout_editor_absoluteY="428dp"
         tools:layout_editor_absoluteX="0dp"/>
 
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guidelineH2"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.475"
+        app:layout_constraintGuide_percent="0.55"
         tools:layout_editor_absoluteY="313dp"
         tools:layout_editor_absoluteX="0dp"/>
 
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guidelineH1"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintGuide_percent="0.40"
         tools:layout_editor_absoluteY="198dp"
         tools:layout_editor_absoluteX="0dp"/>
 
