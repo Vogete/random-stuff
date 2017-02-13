@@ -143,28 +143,35 @@ public class MainActivity extends AppCompatActivity
 
         double number1 = Double.parseDouble(lblResult.getText().toString());
 
-        switch (previousOperation)
+        if (operationPressed)
         {
-            case 1:
-                result = result + number1;
-                break;
-            case 2:
-                result = result - number1;
-                break;
-            case 3:
-                result = result * number1;
-                break;
-            case 4:
-                result = result / number1;
-                break;
-            case 0:
-                result = number1;
-                break;
-            case -1:
-                result = number1;
-                break;
+            previousOperation = currentOperation;
+        } else {
 
+            switch (previousOperation)
+            {
+                case 1:
+                    result = result + number1;
+                    break;
+                case 2:
+                    result = result - number1;
+                    break;
+                case 3:
+                    result = result * number1;
+                    break;
+                case 4:
+                    result = result / number1;
+                    break;
+                case 0:
+                    result = number1;
+                    break;
+                case -1:
+                    result = number1;
+                    break;
+
+            }
         }
+
 
         previousOperation = currentOperation;
 
