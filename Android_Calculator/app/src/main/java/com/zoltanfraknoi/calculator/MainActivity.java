@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity
         Button btnClicked = (Button) v;
         String btnClickedName = getResources().getResourceEntryName(btnClicked.getId());
 
+        if (Double.isInfinite(result) || Double.isNaN(result))
+        {
+            result = 0;
+        }
+
         switch (btnClickedName)
         {
             case "btnPlus":
@@ -141,7 +146,15 @@ public class MainActivity extends AppCompatActivity
 
     public void calculate(int currentOperation){
 
-        double number1 = Double.parseDouble(lblResult.getText().toString());
+        double number1;
+        try
+        {
+            number1 = Double.parseDouble(lblResult.getText().toString());
+        } catch (NumberFormatException e)
+        {
+            number1 = 0;
+        }
+
 
         if (operationPressed)
         {
