@@ -35,8 +35,7 @@ extension Sequence {
 class ViewController: UIViewController {
 
     @IBOutlet weak var lblQuestion: UILabel!
-
-    var categories: [Category] = [];
+    
     var currentCategory = -1;
     var shuffledQuestions : [Question] = [];
     
@@ -50,9 +49,8 @@ class ViewController: UIViewController {
         currentCategory = 0;
         //---------------
         
-        initQuestions();
         
-        shuffledQuestions = shuffleQuestions(questions: categories[currentCategory].questions);
+        // shuffledQuestions = shuffleQuestions(questions: categories[currentCategory].questions);
 
 
     }
@@ -66,7 +64,7 @@ class ViewController: UIViewController {
     
     @IBAction func btnSkip(_ sender: Any) {
         
-        lblQuestion.text = shuffledQuestions[0].question;
+//        lblQuestion.text = shuffledQuestions[0].question;
     }
     
     
@@ -77,44 +75,7 @@ class ViewController: UIViewController {
     }
     
     
-    func initQuestions() {
-        categories.removeAll(keepingCapacity: false);
-        
-        categories.append(Category("Sport"));
-        categories.append(Category("Science"));
-        categories.append(Category("TV"));
-        categories.append(Category("History"));
-        
-        var newQuestion = Question("", "");
-        
-        newQuestion.question = "Which London team earned the nickname 'The Crazy Gang'?";
-        newQuestion.correctAnswer = "Wimbledon FC";
-        newQuestion.addAnswer("Manchester United");
-        newQuestion.addAnswer("Arsenal");
-        newQuestion.addAnswer("Liverpool");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
-        
-        newQuestion.question = "Which manager said he'd been in more courts than Bjorn Borg?";
-        newQuestion.correctAnswer = "Tommy Docherty";
-        newQuestion.addAnswer("Someone Else");
-        newQuestion.addAnswer("Other person");
-        newQuestion.addAnswer("Idont know");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
 
-        newQuestion.question = "London hosts/hosted the 2012 Olympic Games. In which previous years have London hosted the games?";
-        newQuestion.correctAnswer = "1948 and 1908";
-        newQuestion.addAnswer("1952 and 1994");
-        newQuestion.addAnswer("1982 and 1904");
-        newQuestion.addAnswer("1964 and 1972");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
-        
-        
-        
-        
-    }
     
 }
 
