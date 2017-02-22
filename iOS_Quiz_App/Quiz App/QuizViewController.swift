@@ -32,7 +32,7 @@ extension Sequence {
     }
 }
 
-class ViewController: UIViewController {
+class QuizViewController: UIViewController {
 
     @IBOutlet weak var lblQuestion: UILabel!
     

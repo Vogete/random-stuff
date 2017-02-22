@@ -9,43 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Menu-->
-        <scene sceneID="YsJ-WI-Fih">
-            <objects>
-                <viewController title="Menu" id="ZfG-9V-0du" customClass="MenuViewController" customModule="Quiz_App" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="NKQ-Ay-gDA"/>
-                        <viewControllerLayoutGuide type="bottom" id="RXv-bX-61Z"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xlx-fR-Qn4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pr3-IW-vaK">
-                                <rect key="frame" x="16" y="72" width="88" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Temp Start"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="9aa-UD-3xr"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Aft-NI-2lJ">
-                                <rect key="frame" x="0.0" y="180" width="320" height="334"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="ZfG-9V-0du" id="CAg-9O-K1O"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Main Menu" id="ET5-Bw-NB2"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="P9J-qo-Yuq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-5.625" y="-2.112676056338028"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="KvR-B8-WnO">
             <objects>
@@ -55,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ZfG-9V-0du" kind="relationship" relationship="rootViewController" id="Fk3-I3-cE6"/>
+                        <segue destination="4Zb-dJ-U1w" kind="relationship" relationship="rootViewController" id="sLa-sH-ig3"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RFB-Dg-249" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -65,7 +28,7 @@
         <!--Quiz-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Quiz" id="BYZ-38-t0r" customClass="ViewController" customModule="Quiz_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="QuizViewController" title="Quiz" id="BYZ-38-t0r" customClass="QuizViewController" customModule="Quiz_App" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -110,6 +73,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="859" y="-2"/>
+        </scene>
+        <!--Main Menu-->
+        <scene sceneID="gFi-qi-Ahm">
+            <objects>
+                <tableViewController id="4Zb-dJ-U1w" customClass="MenuTableViewController" customModule="Quiz_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ZcQ-HY-HEX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="Ksj-Bf-dR1">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ksj-Bf-dR1" id="fuO-tw-uKV">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="CHr-h2-HVl"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4Zb-dJ-U1w" id="iYy-xp-Wpb"/>
+                            <outlet property="delegate" destination="4Zb-dJ-U1w" id="84K-pf-hTZ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Main Menu" id="jGR-hh-WG5"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JM1-hG-Hd5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-75" y="-2"/>
         </scene>
     </scenes>
 </document>
