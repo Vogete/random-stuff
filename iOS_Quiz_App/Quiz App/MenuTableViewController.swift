@@ -48,43 +48,22 @@ class MenuTableViewController: UITableViewController {
         return cell
     }
     
-    func initQuestions() {
-        categories.removeAll(keepingCapacity: false);
-        
-        categories.append(Category("Sport"));
-        categories.append(Category("Science"));
-        categories.append(Category("TV"));
-        categories.append(Category("History"));
-        
-        var newQuestion = Question("", "");
-        
-        newQuestion.question = "Which London team earned the nickname 'The Crazy Gang'?";
-        newQuestion.correctAnswer = "Wimbledon FC";
-        newQuestion.addAnswer("Manchester United");
-        newQuestion.addAnswer("Arsenal");
-        newQuestion.addAnswer("Liverpool");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
-        
-        newQuestion.question = "Which manager said he'd been in more courts than Bjorn Borg?";
-        newQuestion.correctAnswer = "Tommy Docherty";
-        newQuestion.addAnswer("Someone Else");
-        newQuestion.addAnswer("Other person");
-        newQuestion.addAnswer("Idont know");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
-        
-        newQuestion.question = "London hosts/hosted the 2012 Olympic Games. In which previous years have London hosted the games?";
-        newQuestion.correctAnswer = "1948 and 1908";
-        newQuestion.addAnswer("1952 and 1994");
-        newQuestion.addAnswer("1982 and 1904");
-        newQuestion.addAnswer("1964 and 1972");
-        categories[0].addQuestion(newQuestion);
-        newQuestion.answers.removeAll(keepingCapacity: false);
-        
-    }
-    
 
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        let quizScene = segue.destination as! QuizViewController
+        
+        // Pass the selected object to the new view controller.
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            let selectedCategory = categories[indexPath.row]
+            quizScene.currentCategory = selectedCategory
+            
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -121,14 +100,42 @@ class MenuTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func initQuestions() {
+        categories.removeAll(keepingCapacity: false);
+        
+        categories.append(Category("Sport"));
+        categories.append(Category("Science"));
+        categories.append(Category("TV"));
+        categories.append(Category("History"));
+        
+        var newQuestion = Question("");
+        
+        newQuestion.question = "Which London team earned the nickname 'The Crazy Gang'?";
+        newQuestion.addAnswer("Wimbledon FC");
+        newQuestion.addAnswer("Manchester United");
+        newQuestion.addAnswer("Arsenal");
+        newQuestion.addAnswer("Liverpool");
+        categories[0].addQuestion(newQuestion);
+        newQuestion.answers.removeAll(keepingCapacity: false);
+        
+        newQuestion.question = "Which manager said he'd been in more courts than Bjorn Borg?";
+        newQuestion.addAnswer("Tommy Docherty");
+        newQuestion.addAnswer("Someone Else");
+        newQuestion.addAnswer("Other person");
+        newQuestion.addAnswer("Idont know");
+        categories[0].addQuestion(newQuestion);
+        newQuestion.answers.removeAll(keepingCapacity: false);
+        
+        newQuestion.question = "London hosts/hosted the 2012 Olympic Games. In which previous years have London hosted the games?";
+        newQuestion.addAnswer("1948 and 1908");
+        newQuestion.addAnswer("1952 and 1994");
+        newQuestion.addAnswer("1982 and 1904");
+        newQuestion.addAnswer("1964 and 1972");
+        categories[0].addQuestion(newQuestion);
+        newQuestion.answers.removeAll(keepingCapacity: false);
+        
     }
-    */
+    
 
 }

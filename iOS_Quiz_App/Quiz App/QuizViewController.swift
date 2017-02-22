@@ -32,27 +32,27 @@ extension Sequence {
     }
 }
 
-class QuizViewController: UIViewController {
 
+class QuizViewController: UIViewController, UITableViewDataSource {
+
+    @IBOutlet weak var tblChoices: UITableView!
     @IBOutlet weak var lblQuestion: UILabel!
+    @IBOutlet weak var lblScore: UILabel!
     
-    var currentCategory = -1;
-    var shuffledQuestions : [Question] = [];
-    
+    var currentCategory : Category?
+    var shuffledQuestions : [Question] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
-        //temporary stuff
-        currentCategory = 0;
-        //---------------
-        
-        
-        // shuffledQuestions = shuffleQuestions(questions: categories[currentCategory].questions);
+        shuffledQuestions = shuffleQuestions(questions: (currentCategory?.questions)!);
 
-
+        if shuffledQuestions.count > 0 {
+            lblQuestion.text = shuffledQuestions[0].question
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,19 +63,64 @@ class QuizViewController: UIViewController {
 
     
     @IBAction func btnSkip(_ sender: Any) {
-        
-//        lblQuestion.text = shuffledQuestions[0].question;
+        shuffledQuestions.append(shuffledQuestions.remove(at: 0))
+        refreshView()
     }
     
     
     func shuffleQuestions(questions : [Question]) -> [Question] {
-        var questionList = questions;
-        questionList.shuffle();
-        return questionList;
+        
+        var questionList = questions
+        questionList.shuffle()
+
+        for var i in (0..<questionList.count) {
+            questionList[i] = shuffleAnswers(question: questionList[i])
+        }
+        
+        return questionList
     }
     
+    func shuffleAnswers(question : Question) -> Question {
+        
+        let rightAnswer = question.answers[question.correctAnswer]
+        var currentQuestion = question
+        currentQuestion.answers.shuffle()
+        
+        for var i in (0..<currentQuestion.answers.count) {
+            if currentQuestion.answers[i] == rightAnswer {
+                currentQuestion.correctAnswer = i
+            }
+        }
+        
+        return currentQuestion
+    }
     
+    func refreshView() {
+        self.tblChoices.reloadData()
+        
+        if shuffledQuestions.count > 0 {
+            lblQuestion.text = shuffledQuestions[0].question
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (currentCategory?.questions.count)! > 0 {
+            return shuffledQuestions[0].answers.count
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        cell.textLabel?.text = shuffledQuestions[0].answers[indexPath.row]
+        
+        return cell
+    }
     
 }
 

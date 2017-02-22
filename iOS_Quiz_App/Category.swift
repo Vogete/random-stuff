@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Category {
+struct Category {
     var categoryName = "";
     var questions: [Question] = [];
     
@@ -17,7 +17,7 @@ class Category {
         categoryName = name;
     }
     
-    func addQuestion(_ question : Question) {
+    mutating func addQuestion(_ question : Question) {
         self.questions.append(question);
     }
 }
@@ -25,11 +25,10 @@ class Category {
 
 struct Question {
     var question: String = "";
-    var correctAnswer: String = "";
+    var correctAnswer: Int = 0;
     var answers: [String] = [];
     
-    
-    init(_ question: String, _ correctAnswer: String) {
+    init(_ question: String, _ correctAnswer: Int = 0) {
         self.question = question;
         self.correctAnswer = correctAnswer;
     }
