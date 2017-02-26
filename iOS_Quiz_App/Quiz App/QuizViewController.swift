@@ -33,15 +33,16 @@ extension Sequence {
 }
 
 
-class QuizViewController: UIViewController, UITableViewDataSource {
+class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tblChoices: UITableView!
     @IBOutlet weak var lblQuestion: UILabel!
     @IBOutlet weak var lblScore: UILabel!
+    @IBOutlet weak var buttonSkip: UIButton!
     
     var currentCategory : Category?
     var shuffledQuestions : [Question] = []
-    
+    var score = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +64,13 @@ class QuizViewController: UIViewController, UITableViewDataSource {
 
     
     @IBAction func btnSkip(_ sender: Any) {
+        shuffledQuestions[0] = shuffleAnswers(question: shuffledQuestions[0])
         shuffledQuestions.append(shuffledQuestions.remove(at: 0))
+        refreshView()
+    }
+    
+    func nextQuestion() {
+        shuffledQuestions.remove(at: 0)
         refreshView()
     }
     
@@ -96,11 +103,15 @@ class QuizViewController: UIViewController, UITableViewDataSource {
     }
     
     func refreshView() {
-        self.tblChoices.reloadData()
+        
         
         if shuffledQuestions.count > 0 {
             lblQuestion.text = shuffledQuestions[0].question
+        } else {
+            lblQuestion.text = "Game Over"
+            self.buttonSkip.isEnabled = false
         }
+            self.tblChoices.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -108,7 +119,7 @@ class QuizViewController: UIViewController, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (currentCategory?.questions.count)! > 0 {
+        if (shuffledQuestions.count) > 0 {
             return shuffledQuestions[0].answers.count
         }
         return 0
@@ -121,6 +132,34 @@ class QuizViewController: UIViewController, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell : UITableViewCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
+        
+        tableView.isUserInteractionEnabled = false
+        buttonSkip.isEnabled = false
+        
+        if indexPath.row == shuffledQuestions[0].correctAnswer {
+            selectedCell.contentView.backgroundColor = UIColor.green
+            score += 1
+            lblScore.text = "Score: " + String(score)
+            
+        } else {
+            selectedCell.contentView.backgroundColor = UIColor.red
+        }
+
+        
+        var timer : Timer?
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false){timer in
+            tableView.isUserInteractionEnabled = true
+            self.buttonSkip.isEnabled = true
+            self.nextQuestion()
+        }
+        
+    }
+    
+    
     
 }
 
