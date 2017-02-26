@@ -46,12 +46,15 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view, typically from a nib.
 
         shuffledQuestions = shuffleQuestions(questions: (currentCategory?.questions)!);
 
         if shuffledQuestions.count > 0 {
             lblQuestion.text = shuffledQuestions[0].question
+        } else {
+            buttonSkip.isEnabled = false
         }
         
     }
