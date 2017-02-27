@@ -39,10 +39,15 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var lblQuestion: UILabel!
     @IBOutlet weak var lblScore: UILabel!
     @IBOutlet weak var buttonSkip: UIButton!
+    @IBOutlet weak var lblTime: UILabel!
     
     var currentCategory : Category?
     var shuffledQuestions : [Question] = []
     var score = 0
+
+    var timer : Timer?
+    var questionTimer : Timer?
+    var timeRemaining = 30
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,9 +58,13 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         if shuffledQuestions.count > 0 {
             lblQuestion.text = shuffledQuestions[0].question
+            startQuestionTimer()
         } else {
             buttonSkip.isEnabled = false
         }
+        
+        
+        
         
     }
 
@@ -110,9 +119,13 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if shuffledQuestions.count > 0 {
             lblQuestion.text = shuffledQuestions[0].question
+            stopQuestionTimer()
+            startQuestionTimer()
         } else {
             lblQuestion.text = "Game Over"
             self.buttonSkip.isEnabled = false
+            stopQuestionTimer()
+            
         }
             self.tblChoices.reloadData()
     }
@@ -139,6 +152,8 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCell : UITableViewCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
+        stopQuestionTimer()
+        
         tableView.isUserInteractionEnabled = false
         buttonSkip.isEnabled = false
         
@@ -152,14 +167,35 @@ class QuizViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
         
-        var timer : Timer?
         
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false){timer in
             tableView.isUserInteractionEnabled = true
             self.buttonSkip.isEnabled = true
             self.nextQuestion()
         }
+
         
+        
+    }
+    
+    func startQuestionTimer() {
+        timeRemaining = 30
+        self.lblTime.text = "Time: " + String(self.timeRemaining)
+        
+        questionTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){timer in
+            if self.timeRemaining > 0 {
+                self.timeRemaining -= 1
+            } else {
+                self.timeRemaining = 30
+                self.nextQuestion()
+            }
+            self.lblTime.text = "Time: " + String(self.timeRemaining)
+            
+        }
+    }
+    
+    func stopQuestionTimer() {
+        self.questionTimer?.invalidate()
     }
     
     
