@@ -92,9 +92,9 @@ function pointerToWord(array, charSet) {
 
 function main(res) {
 
-    var wordLength = 3;
+    var wordLength = 4;
     characterSet = "0123456789abcdefghijklmnopqrstuvwxyz".split("");
-    var hash = "9756b18c0227354990c1632a416656f7bedc196b";
+    var hash = "9756b18c0227354990c1632a416656f7bedc196b1";
     var hashtype = "sha1";
 
     res.write( "Hash to be decrypted: " + hash + "\n");

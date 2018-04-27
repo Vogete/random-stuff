@@ -2,7 +2,7 @@
  * A specific status of the game field
  */
 var Grid = (function () {
-    function Grid() {
+    function Grid(rowCount, colCount) {
     }
     return Grid;
 }());
